@@ -12,6 +12,10 @@ footer {
     margin-top: auto;
 }
 
+p {
+    color: white;
+}
+
 a {
     margin: 5px;
 }
