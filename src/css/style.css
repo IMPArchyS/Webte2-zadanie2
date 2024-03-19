@@ -25,12 +25,12 @@ tbody a {
 }
 
 .impFontH {
-    color: rgb(241, 95, 229) !important;
+    color: rgb(255, 87, 87) !important;
     font-weight: bold;
 }
 
 .impFontW {
-    color: rgb(255, 209, 251) !important;
+    color: rgb(255, 110, 110) !important;
     font-weight: bolder;
 }
 
@@ -95,8 +95,8 @@ tbody a {
 }
 
 .impGreenButton {
-    background-color: green !important;
-    border-color: green !important;
+    background-color: rgb(60, 92, 197) !important;
+    border-color: rgb(60, 92, 197) !important;
     min-width: 20%;
     max-width: 100%;
 }
