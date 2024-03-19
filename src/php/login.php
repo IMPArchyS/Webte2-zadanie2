@@ -126,6 +126,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
                 // Check if cell contains class information
                 if (!empty($classInfo)) {
+                    // Determine course type based on td class attribute
+                    $type = '';
+                    $classType = trim($cell->getAttribute('class'));
+                    if ($classType === 'rozvrh-pred') {
+                        $type = 'Prednáška';
+                    } elseif ($classType === 'rozvrh-cvic') {
+                        $type = 'Cvičenie';
+                    }
+        
                     // Split class info into room, name, and professor
                     $classRoomElement = $cell->getElementsByTagName('a')->item(0); // Room is the first <a> element
                     $classRoom = trim($classRoomElement->nodeValue);
@@ -155,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         'day' => $day,
                         'start_time' => $startTime,
                         'end_time' => $endTime,
+                        'type' => $type,
                         'class_room' => $classRoom,
                         'class_name' => $className,
                         'class_professor' => $classProfessor
@@ -162,6 +172,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         }
+        
+        
+        // Establish a MySQL connection using PDO
+        // Fetch the database credentials from the config file/
+        
+        require_once '../config.php';
+
+        $pdo = new PDO("mysql:host={$dbconfig['hostname']};dbname={$dbconfig['dbname']}", $dbconfig['username'], $dbconfig['password']);
+
+        foreach ($classes as $class) {
+            // Check if the class already exists in the database
+            $stmt = $pdo->prepare("SELECT * FROM Rozvrh WHERE den = :day AND cas_od = :start_time AND cas_do = :end_time AND miestnost = :class_room AND nazov_akcie = :class_name AND vyucujuci = :class_professor AND typ_akcie = :type");
+            $stmt->bindParam(':day', $class['day']);
+            $stmt->bindParam(':start_time', $class['start_time']);
+            $stmt->bindParam(':end_time', $class['end_time']);
+            $stmt->bindParam(':class_room', $class['class_room']);
+            $stmt->bindParam(':class_name', $class['class_name']);
+            $stmt->bindParam(':class_professor', $class['class_professor']);
+            $stmt->bindParam(':type', $class['type']);
+            $stmt->execute();
+    
+            // If the class does not exist, insert it into the database
+            if ($stmt->rowCount() == 0) {
+                $insertStmt = $pdo->prepare("INSERT INTO Rozvrh (den, cas_od, cas_do, miestnost, nazov_akcie, vyucujuci, typ_akcie) VALUES (:day, :start_time, :end_time, :class_room, :class_name, :class_professor, :type)");
+                $insertStmt->bindParam(':day', $class['day']);
+                $insertStmt->bindParam(':start_time', $class['start_time']);
+                $insertStmt->bindParam(':end_time', $class['end_time']);
+                $insertStmt->bindParam(':class_room', $class['class_room']);
+                $insertStmt->bindParam(':class_name', $class['class_name']);
+                $insertStmt->bindParam(':class_professor', $class['class_professor']);
+                $insertStmt->bindParam(':type', $class['type']);
+                $insertStmt->execute();
+            }
+        }
+        // Echo class information into a div
+        /*
+        foreach ($classes as $class) {
+            echo "<div class='text-white'>";
+            echo "Day: " . $class['day'] . "<br>";
+            echo "Start Time: " . $class['start_time'] . "<br>";
+            echo "End Time: " . $class['end_time'] . "<br>";
+            echo "Type: " . $class['type'] . "<br>";
+            echo "Class Room: " . $class['class_room'] . "<br>";
+            echo "Class Name: " . $class['class_name'] . "<br>";
+            echo "Class Professor: " . $class['class_professor'] . "<br>";
+            echo "</div>";
+        }
+        */
     }
 }
     include_once "footer.php";
