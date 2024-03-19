@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <title>Prihlásenie</title>
+    <title>Aktualizácia rozvrhu</title>
 </head>
 <body>
     <?php 
@@ -14,7 +14,7 @@
     ?>
 
     <div class="container impContainer text-center">
-        <h1 class="impFontH">Prihlásenie</h1>
+        <h1 class="impFontH">Prihlásenie do AISu</h1>
         <form method="POST" action="login.php" id="loginForm">
             
             <div class="form-group my-2 col-9 mx-auto">
@@ -29,6 +29,7 @@
             <button id="submitLoginButton" type="submit" class="impGreenButton my-3 btn btn-primary">Prihlásiť sa</button>
         </form>
     </div>
+<script src="../js/notStuba.js"></script>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -74,10 +75,96 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = curl_exec($curl);
     curl_close($curl);
 
-    echo "<p>" . $response . "</p>";
+    // Create a new DOMDocument instance
+    $dom = new DOMDocument;
+
+    // Suppress warnings due to invalid HTML
+    libxml_use_internal_errors(true);
+
+    // Load the HTML
+    $dom->loadHTML($response);
+
+    // Clear the errors
+    libxml_clear_errors();
+
+    // Create a new DOMXPath instance
+    $xpath = new DOMXPath($dom);
+
+    $elements = $xpath->query("//h1[contains(text(), 'Prihlásenie do systému')]");
+
+    if ($elements->length > 0) {
+        echo "<script>badInput();</script>";
+    } else {
+        echo "<script>goodInput();</script>";
+
+        // Query the first table element
+        $table = $xpath->query('//table')->item(0);
+    
+        // Save the table HTML to a variable
+        $tableHTML = $dom->saveHTML($table);
+    
+        $doc = new DOMDocument();
+        $doc->loadHTML(mb_convert_encoding($tableHTML, 'HTML-ENTITIES', 'UTF-8'));
+        
+        $xpath = new DOMXPath($doc);
+        
+        // Array to store class timings and courses
+        $classes = array();
+        
+        // Iterate over each row
+        $rows = $xpath->query("//table/tbody/tr");
+        foreach ($rows as $row) {
+            $cells = $row->getElementsByTagName('td');
+        
+            // Extract day
+            $day = $cells[0]->nodeValue;
+        
+            // Iterate over cells starting from the second one
+            for ($i = 1; $i < $cells->length; $i++) {
+                $cell = $cells[$i];
+                $classInfo = trim($cell->nodeValue);
+        
+                // Check if cell contains class information
+                if (!empty($classInfo)) {
+                    // Split class info into room, name, and professor
+                    $classRoomElement = $cell->getElementsByTagName('a')->item(0); // Room is the first <a> element
+                    $classRoom = trim($classRoomElement->nodeValue);
+        
+                    $classNameElement = $cell->getElementsByTagName('a')->item(1); // Name is the second <a> element
+                    $className = trim($classNameElement->nodeValue);
+        
+                    $classProfessorElement = $cell->getElementsByTagName('i')->item(0); // Professor is the <i> element
+                    $classProfessor = trim($classProfessorElement->nodeValue);
+        
+                    // Calculate class timing based on column index
+                    $startHour = 7 + (int)(($i - 1) / 12) + ((($i - 1) % 12) * 2) / 12;
+                    $endHour = $startHour + 1;
+        
+                    // Adjust timing for breaks
+                    if ($startHour >= 9) {
+                        $startHour += 1;
+                        $endHour += 1;
+                    }
+        
+                    // Format class timing
+                    $startTime = sprintf("%02d:00", $startHour);
+                    $endTime = sprintf("%02d:50", $endHour);
+        
+                    // Store class information
+                    $classes[] = array(
+                        'day' => $day,
+                        'start_time' => $startTime,
+                        'end_time' => $endTime,
+                        'class_room' => $classRoom,
+                        'class_name' => $className,
+                        'class_professor' => $classProfessor
+                    );
+                }
+            }
+        }
+    }
 }
     include_once "footer.php";
 ?>
 </body>
-<script src="../js/loginLogic.js"></script>
 </html>

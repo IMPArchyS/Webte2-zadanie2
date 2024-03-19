@@ -10,10 +10,10 @@
                     <a class="nav-link" href="../php/login.php">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../php/timetable.php">Timetable</a>
+                    <a class="nav-link" href="../php/timetable.php">Rozvrh</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../php/works.php">Works</a>
+                    <a class="nav-link" href="../php/works.php">Záverečné práce</a>
                 </li>
             </ul>
         </div>
