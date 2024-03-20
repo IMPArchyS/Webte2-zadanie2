@@ -16,3 +16,9 @@ $dbconfig = array(
     'password' => 'root',
     'dbname' => 'webte2zadanie2',
 );
+
+$conn = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
+
+if (!$conn) {
+    die("Connection failed: " . $conn->connect_error);
+}

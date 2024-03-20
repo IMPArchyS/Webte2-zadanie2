@@ -41,8 +41,8 @@
 require_once '../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_method'] == 'DELETE') {
-    $pdo = new PDO("mysql:host={$dbconfig['hostname']};dbname={$dbconfig['dbname']}", $dbconfig['username'], $dbconfig['password']);
-    $stmt = $pdo->prepare("DELETE FROM Rozvrh");
+    $pdo = $conn;
+    $stmt = $pdo->prepare("DELETE FROM rozvrh");
     if ($stmt->execute()) {
         echo "<script>dbSuccess();</script>";
     } else {
@@ -199,7 +199,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         foreach ($classes as $class) {
             // Check if the class already exists in the database
-            $stmt = $pdo->prepare("SELECT * FROM Rozvrh WHERE den = :day AND cas_od = :start_time AND cas_do = :end_time AND miestnost = :class_room AND nazov_akcie = :class_name AND vyucujuci = :class_professor AND typ_akcie = :type");
+            $stmt = $pdo->prepare("SELECT * FROM rozvrh WHERE den = :day AND cas_od = :start_time AND cas_do = :end_time AND miestnost = :class_room AND nazov_akcie = :class_name AND vyucujuci = :class_professor AND typ_akcie = :type");
             $stmt->bindParam(':day', $class['day']);
             $stmt->bindParam(':start_time', $class['start_time']);
             $stmt->bindParam(':end_time', $class['end_time']);
@@ -211,7 +211,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
             // If the class does not exist, insert it into the database
             if ($stmt->rowCount() == 0) {
-                $insertStmt = $pdo->prepare("INSERT INTO Rozvrh (den, cas_od, cas_do, miestnost, nazov_akcie, vyucujuci, typ_akcie) VALUES (:day, :start_time, :end_time, :class_room, :class_name, :class_professor, :type)");
+                $insertStmt = $pdo->prepare("INSERT INTO rozvrh (den, cas_od, cas_do, miestnost, nazov_akcie, vyucujuci, typ_akcie) VALUES (:day, :start_time, :end_time, :class_room, :class_name, :class_professor, :type)");
                 $insertStmt->bindParam(':day', $class['day']);
                 $insertStmt->bindParam(':start_time', $class['start_time']);
                 $insertStmt->bindParam(':end_time', $class['end_time']);
