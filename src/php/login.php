@@ -26,13 +26,30 @@
                 <input type="password" class="form-control text-light impSelect" id="password" name="password">
             </div>
             <h5 id="passwordError" class="text-danger"></h5>
+            <input type="hidden" name="_method" value="POST" />
             <button id="submitLoginButton" type="submit" class="impGreenButton my-3 btn btn-primary">Prihlásiť sa</button>
+        </form>
+        <form method="POST" action="login.php">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button id="deleteDBbutton" type="submit" class="impRedButton my-3 btn btn-primary">Vymazať údaje</button>
+            <h5 id="dbResponse" class="text-danger"></h5>
         </form>
     </div>
 <script src="../js/notStuba.js"></script>
 
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+require_once '../config.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_method'] == 'DELETE') {
+    $pdo = new PDO("mysql:host={$dbconfig['hostname']};dbname={$dbconfig['dbname']}", $dbconfig['username'], $dbconfig['password']);
+    $stmt = $pdo->prepare("DELETE FROM Rozvrh");
+    if ($stmt->execute()) {
+        echo "<script>dbSuccess();</script>";
+    } else {
+        echo "<script>dbError();</script>";
+    }
+}
+elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $postValues = array(
         "destination" => "/auth/?lang=sk",
         "credential_0" => $_POST["username"],
@@ -177,7 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Establish a MySQL connection using PDO
         // Fetch the database credentials from the config file/
         
-        require_once '../config.php';
 
         $pdo = new PDO("mysql:host={$dbconfig['hostname']};dbname={$dbconfig['dbname']}", $dbconfig['username'], $dbconfig['password']);
 

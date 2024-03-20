@@ -8,8 +8,25 @@ function goodInput() {
 
 $('#username').on('blur', function () {
     goodInput();
+    dbResponseHide();
 });
 
 $('#password').on('blur', function () {
     goodInput();
+    dbResponseHide();
 });
+
+function dbError() {
+    $('#dbResponse').text('Nastala chyba');
+    $('#dbResponse').removeClass('text-success');
+    $('#dbResponse').addClass('text-danger');
+}
+
+function dbSuccess() {
+    $('#dbResponse').text('Údaje odstránené');
+    $('#dbResponse').removeClass('text-danger');
+    $('#dbResponse').addClass('text-success');
+}
+function dbResponseHide() {
+    $('#dbResponse').text('');
+}
