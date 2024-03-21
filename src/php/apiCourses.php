@@ -10,6 +10,9 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Extract endpoint from request URI
 $requestUri = explode('/', $_SERVER['REQUEST_URI']);
 $endpoint = end($requestUri);
+$parsed_url = parse_url($endpoint);
+$endpoint = $parsed_url['path'];
+
 
 // Handle endpoint /courses
 if ($endpoint === 'courses') {
@@ -91,6 +94,7 @@ if ($endpoint === 'courses') {
 } else {
     // Invalid endpoint
     http_response_code(404); // Not Found
+    echo json_encode(array("message" => "Requested URI: " . $endpoint));
     echo json_encode(array("message" => "Endpoint not found."));
 }
 
