@@ -6,6 +6,12 @@ function goodInput() {
     $('#passwordError').text('');
 }
 
+function addedToDb() {
+    $('#dbResponse').text('Údaje pridané');
+    $('#dbResponse').removeClass('text-danger');
+    $('#dbResponse').addClass('text-success');
+}
+
 $('#username').on('blur', function () {
     goodInput();
     dbResponseHide();

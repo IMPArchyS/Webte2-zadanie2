@@ -27,16 +27,16 @@ class Course {
     }
 
     public function addCourse($data) {
-        if (isset($data['day']) && isset($data['time_start']) && isset($data['time_end']) && isset($data['type']) && isset($data['name']) && isset($data['room']) && isset($data['teacher'])) {
+        if (isset($data['den']) && isset($data['cas_od']) && isset($data['cas_do']) && isset($data['typ_akcie']) && isset($data['nazov_akcie']) && isset($data['miestnost']) && isset($data['vyucujuci'])) {
             $q = "INSERT INTO rozvrh (den, cas_od, cas_do, typ_akcie, nazov_akcie, miestnost, vyucujuci) VALUES (:den, :cas_od, :cas_do, :typ_akcie, :nazov_akcie, :miestnost, :vyucujuci)";
             $stmt = $this->conn->prepare($q);
-            $stmt->bindParam(':den', $data['day']);
-            $stmt->bindParam(':cas_od', $data['time_start']);
-            $stmt->bindParam(':cas_do', $data['time_end']);
-            $stmt->bindParam(':typ_akcie', $data['type']);
-            $stmt->bindParam(':nazov_akcie', $data['name']);
-            $stmt->bindParam(':miestnost', $data['room']);
-            $stmt->bindParam(':vyucujuci', $data['teacher']);
+            $stmt->bindParam(':den', $data['den']);
+            $stmt->bindParam(':cas_od', $data['cas_od']);
+            $stmt->bindParam(':cas_do', $data['cas_do']);
+            $stmt->bindParam(':typ_akcie', $data['typ_akcie']);
+            $stmt->bindParam(':nazov_akcie', $data['nazov_akcie']);
+            $stmt->bindParam(':miestnost', $data['miestnost']);
+            $stmt->bindParam(':vyucujuci', $data['vyucujuci']);
             if ($stmt->execute()) {
                 return true;
             } else {
@@ -51,13 +51,13 @@ class Course {
         $q = "UPDATE rozvrh SET den = :den, cas_od = :cas_od, cas_do = :cas_do, typ_akcie = :typ_akcie, nazov_akcie = :nazov_akcie, miestnost = :miestnost, vyucujuci = :vyucujuci WHERE id = :id";
         $stmt = $this->conn->prepare($q);
         $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':den', $data['day']);
-        $stmt->bindParam(':cas_od', $data['time_start']);
-        $stmt->bindParam(':cas_do', $data['time_end']);
-        $stmt->bindParam(':typ_akcie', $data['type']);
-        $stmt->bindParam(':nazov_akcie', $data['name']);
-        $stmt->bindParam(':miestnost', $data['room']);
-        $stmt->bindParam(':vyucujuci', $data['teacher']);
+        $stmt->bindParam(':den', $data['den']);
+        $stmt->bindParam(':cas_od', $data['cas_od']);
+        $stmt->bindParam(':cas_do', $data['cas_do']);
+        $stmt->bindParam(':typ_akcie', $data['typ_akcie']);
+        $stmt->bindParam(':nazov_akcie', $data['nazov_akcie']);
+        $stmt->bindParam(':miestnost', $data['miestnost']);
+        $stmt->bindParam(':vyucujuci', $data['vyucujuci']);
         if ($stmt->execute()) {
             return true;
         } else {
