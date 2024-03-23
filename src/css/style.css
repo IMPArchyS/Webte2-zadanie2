@@ -150,3 +150,15 @@ tbody a {
     color: red;
     font-weight: bold; /* make the text bolder */
 }
+
+.impLecture {
+    background-color: rgb(32, 32, 56) !important;
+    box-shadow: none !important;
+    border: 2px rgb(190, 190, 190) solid;
+}
+
+.impCourse {
+    background-color: rgb(32, 70, 52) !important;
+    box-shadow: none !important;
+    border: 2px rgb(190, 190, 190) solid;
+}

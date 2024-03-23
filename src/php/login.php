@@ -127,6 +127,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $cells = $row->getElementsByTagName('td');
         
             $day = $cells[0]->nodeValue;
+
+            $hourCounter = 8;
         
             for ($i = 1; $i < $cells->length; $i++) {
                 $cell = $cells[$i];
@@ -150,14 +152,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $classProfessorElement = $cell->getElementsByTagName('i')->item(0); 
                     $classProfessor = trim($classProfessorElement->nodeValue);
         
-                    $startHour = 7 + (int)(($i - 1) / 12) + ((($i - 1) % 12) * 2) / 12;
+                    $startHour = $hourCounter;
                     $endHour = $startHour + 1;
-        
-                    if ($startHour >= 9) {
-                        $startHour += 1;
-                        $endHour += 1;
-                    }
-        
+                    
                     $startTime = sprintf("%02d:00", $startHour);
                     $endTime = sprintf("%02d:50", $endHour);
         
@@ -170,6 +167,10 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         'nazov_akcie' => $className,
                         'vyucujuci' => $classProfessor
                     );
+                                // Increment the hour counter by 2 for a class
+                    $hourCounter += 2;
+                } else {
+                    $hourCounter += 5 / 60; // 5 minutes in hours
                 }
             }
         }
@@ -200,6 +201,20 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
+    /*
+    foreach ($classes as $class) {
+        echo "<div class='text-white'>";
+        echo "Day: " . $class['den'] . "<br>";
+        echo "Start Time: " . $class['cas_od'] . "<br>";
+        echo "End Time: " . $class['cas_do'] . "<br>";
+        echo "Type: " . $class['typ_akcie'] . "<br>";
+        echo "Class Room: " . $class['miestnost'] . "<br>";
+        echo "Class Name: " . $class['nazov_akcie'] . "<br>";
+        echo "Class Professor: " . $class['vyucujuci'] . "<br>";
+        echo "-----------------------<br>";
+        echo "</div>";
+    }
+    */
 }
     include_once "footer.php";
 ?>
