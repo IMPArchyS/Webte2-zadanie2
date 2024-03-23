@@ -166,8 +166,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         'cas_od' => $startTime,
                         'cas_do' => $endTime,
                         'typ_akcie' => $type,
-                        'nazov_akcie' => $classRoom,
-                        'miestnost' => $className,
+                        'miestnost' => $classRoom,
+                        'nazov_akcie' => $className,
                         'vyucujuci' => $classProfessor
                     );
                 }
