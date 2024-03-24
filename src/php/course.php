@@ -48,6 +48,44 @@ class Course {
     }
 
     public function updateCourse($id, $data) {
+        // Initialize an array to hold the fields to update
+        $fieldsToUpdate = array();
+
+        // Iterate over each field in the $data array
+        foreach ($data as $key => $value) {
+            // Check if the field is set and not empty
+            if (isset($data[$key]) && !empty($data[$key])) {
+                // Add the field to the list of fields to update
+                $fieldsToUpdate[] = "$key = :$key";
+            }
+        }
+
+        if (empty($fieldsToUpdate)) {
+            return false;
+        }
+
+        // Construct the SET clause of the SQL query
+        $setClause = implode(', ', $fieldsToUpdate);
+
+        // Construct the SQL query
+        $q = "UPDATE rozvrh SET $setClause WHERE id = :id";
+        $stmt = $this->conn->prepare($q);
+
+        // Bind parameters
+        $stmt->bindParam(':id', $id);
+        foreach ($data as $key => $value) {
+            if (isset($data[$key]) && !empty($data[$key])) {
+                $stmt->bindParam(":$key", $data[$key]);
+            }
+        }
+
+        // Execute the query
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+        /*
         $q = "UPDATE rozvrh SET den = :den, cas_od = :cas_od, cas_do = :cas_do, typ_akcie = :typ_akcie, nazov_akcie = :nazov_akcie, miestnost = :miestnost, vyucujuci = :vyucujuci WHERE id = :id";
         $stmt = $this->conn->prepare($q);
         $stmt->bindParam(':id', $id);
@@ -62,7 +100,7 @@ class Course {
             return true;
         } else {
             return false;
-        }
+        }*/
     }
 
     public function deleteCourse($id) {

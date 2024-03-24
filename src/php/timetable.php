@@ -49,14 +49,18 @@
     </div>
     <button id="deleteButton" class="impRedButton my-3 btn btn-primary">Vymazať akciu</button>
     <button id="addButton" class="impGreenButton my-3 btn btn-primary">Pridať/aktualizovať akciu</button>
-    <form id="deleteForm" class="d-none">
+    <form id="deleteForm" class="d-none" method="delete">
         <div class="form-group my-2 col-9 mx-auto">
-            <label class="font-weight-bold impFontW fs-5" for="id">ID</label>
-            <input type="text" class="form-control text-light impSelect" id="id" name="id">
+            <label class="font-weight-bold impFontW fs-5" for="deleteId">ID</label>
+            <input type="text" class="form-control text-light impSelect" id="deleteId" name="deleteId">
         </div>
         <button id="submitDeleteButton" type="submit" class="impButton my-3 btn btn-primary">Potvrdiť</button>
     </form>
     <form id="addForm" class="d-none">
+    <div class="form-group my-2 col-9 mx-auto">
+            <label class="font-weight-bold impFontW fs-5" for="courseId">ID</label>
+            <input type="number" class="form-control text-light impSelect" id="courseId" name="courseId">
+        </div>
         <div class="form-group my-2 col-9 mx-auto">
             <label class="font-weight-bold impFontW fs-5" for="day">Deň</label>
             <input type="text" class="form-control text-light impSelect" id="day" name="day">
@@ -86,6 +90,7 @@
             <label class="font-weight-bold impFontW fs-5" for="teacher">Vyučujúci</label>
             <input type="text" class="form-control text-light impSelect" id="teacher" name="teacher">
         </div>
+        <p class="font-weight-bold text-white fs-5">Ak je pole ID prázdne nastane vytvorenie novej rozvrhovej akcie</p>
         <button id="submitAddButton" type="submit" class="impButton my-3 btn btn-primary">Potvrdiť</button>
     </form>
 
