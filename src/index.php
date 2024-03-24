@@ -1,3 +1,8 @@
+<?php 
+header("Location: php/login.php");
+exit;
+?>
+
 <!DOCTYPE html>
 <html lang="sk">
 <head>
@@ -12,7 +17,6 @@
 <body>
 <?php
 include_once "php/header.php";
-
 include_once "php/footer.php";
 ?>
 </body>
