@@ -7,54 +7,40 @@ function fetchData($url) {
     curl_close($ch);
     return $data;
 }
+// Define HTTP method
+$method = $_SERVER['REQUEST_METHOD'];
 
-// Endpoint for fetching thesis data
-// Example URL: http://yourdomain.com/api/thesis/{pracovisko}/{type}
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $pracovisko = $_GET['pracovisko'] ?? null;
-    $type = $_GET['type'] ?? null;
+// Set character encoding to UTF-8
 
-    // Validate inputs
-    if (!$pracovisko || !$type) {
-        http_response_code(400);
-        echo json_encode(array("message" => "Pracovisko and type parameters are required."));
-        exit();
+// Extract endpoint from request URI
+$requestUri = explode('/', $_SERVER['REQUEST_URI']);
+$endpoint = end($requestUri);
+$parsed_url = parse_url($endpoint);
+$endpoint = $parsed_url['path'];
+
+if ($endpoint === 'themes') {
+    // Handle requests based on HTTP method
+    switch ($method) {
+        case 'GET':
+            $data = json_decode(file_get_contents("php://input"), true);
+            echo json_encode($data);
+            break;
+        case 'POST':
+            break;
+        case 'PUT':
+            break;
+        case 'DELETE':
+            break;
+        default:
+            http_response_code(405); // Method Not Allowed
+            echo json_encode(array("message" => "Method not allowed."));
+            break;
     }
-
-    // Fetch data from the URL
-    $url = "https://is.stuba.sk/pracoviste/prehled_temat.pl?lang=sk;pracoviste={$pracovisko}";
-    $htmlData = fetchData($url);
-
-    // Parse HTML data to extract thesis information
-    // Implement your logic here to parse HTML and extract thesis details
-
-    // Dummy response
-    $thesisData = array(
-        array(
-            "title" => "Thesis 1",
-            "guarantor" => "John Doe",
-            "program" => "Computer Science",
-            "zameranie" => "Artificial Intelligence",
-            "abstract" => "This is the abstract for Thesis 1."
-        ),
-        array(
-            "title" => "Thesis 2",
-            "guarantor" => "Jane Smith",
-            "program" => "Electrical Engineering",
-            "zameranie" => "Power Systems",
-            "abstract" => "This is the abstract for Thesis 2."
-        )
-    );
-
-    // Filter theses based on type
-    $filteredTheses = array_filter($thesisData, function ($thesis) use ($type) {
-        return strtolower($thesis['type']) == strtolower($type);
-    });
-
-    // Return JSON response
-    echo json_encode($filteredTheses);
 } else {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(array("message" => "Method not allowed."));
+    // Invalid endpoint
+    http_response_code(404); // Not Found
+    echo json_encode(array("message" => "Requested URI: " . $endpoint));
+    echo json_encode(array("message" => "Endpoint not found."));
 }
+
 ?>

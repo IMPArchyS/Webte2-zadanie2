@@ -15,7 +15,6 @@ $(function () {
             courses[0].forEach(function (course) {
                 let td1 = document.getElementById(course.den + '-' + course.cas_od.substring(0, 5) + '-' + course.cas_od.substring(0, 2) + ':50');
                 let td2 = document.getElementById(course.den + '-' + course.cas_do.substring(0, 2) + ':00' + '-' + course.cas_do.substring(0, 5));
-                td1.colSpan = 2;
                 td1.innerHTML = '<div>' + course.miestnost + '<br>' + course.nazov_akcie + '<br>' + course.vyucujuci + '</div>';
                 td1.innerHTML +=
                     '<button id="' +
@@ -25,7 +24,10 @@ $(function () {
                     'DelID" class="impDeleteButton btn btn-primary mx-1 px-2 py-1">X</button>';
                 if (course.typ_akcie === 'Prednáška') td1.className = 'impCourse';
                 else td1.className = 'impLecture';
-                td2.parentNode.removeChild(td2);
+                if (td1 !== td2) {
+                    td1.colSpan = 2;
+                    td2.parentNode.removeChild(td2);
+                }
 
                 $('#' + course.id + 'DelID').on('click', function (event) {
                     event.preventDefault();
@@ -100,7 +102,6 @@ $(function () {
                 },
             });
         } else {
-            console.log('SOM TU');
             $.ajax({
                 url: 'apiCourses.php/courses?id=' + itemId,
                 method: 'PUT',
