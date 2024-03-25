@@ -47,36 +47,37 @@
             </tbody>
         </table>
     </div>
-    <button id="deleteButton" class="impRedButton my-3 btn btn-primary">Vymazať akciu</button>
-    <button id="addButton" class="impGreenButton my-3 btn btn-primary">Pridať/aktualizovať akciu</button>
-    <form id="deleteForm" class="d-none" method="delete">
-        <div class="form-group my-2 col-9 mx-auto">
-            <label class="font-weight-bold impFontW fs-5" for="deleteId">ID</label>
-            <input type="text" class="form-control text-light impSelect" id="deleteId" name="deleteId">
-        </div>
-        <button id="submitDeleteButton" type="submit" class="impButton my-3 btn btn-primary">Potvrdiť</button>
-    </form>
+    <button id="addButton" class="impGreenButton my-3 btn btn-primary">Pridať akciu</button>
     <form id="addForm" class="d-none">
-    <div class="form-group my-2 col-9 mx-auto">
+    <div class="form-group my-2 col-9 mx-auto d-none">
             <label class="font-weight-bold impFontW fs-5" for="courseId">ID</label>
             <input type="number" class="form-control text-light impSelect" id="courseId" name="courseId">
         </div>
         <div class="form-group my-2 col-9 mx-auto">
             <label class="font-weight-bold impFontW fs-5" for="day">Deň</label>
-            <input type="text" class="form-control text-light impSelect" id="day" name="day">
+            <select class="form-control text-light impSelect form-select" id="day" name="day">
+                <option value="Po" selected>Pondelok</option>
+                <option value="Ut">Utorok</option>
+                <option value="St">Streda</option>
+                <option value="Št">Štvrtok</option>
+                <option value="Pi">Piatok</option>
+            </select>
         </div>
         <div class="form-group my-2 col-9 mx-auto">
             <label class="font-weight-bold impFontW fs-5" for="timeFrom">Čas od</label>
-            <input type="text" class="form-control text-light impSelect" id="timeFrom" name="timeFrom">
+            <input type="time" class="impTimeControl form-control text-light impSelect" id="timeFrom" name="timeFrom" maxlength="5">
         </div>
         <div class="form-group
         my-2 col-9 mx-auto">
             <label class="font-weight-bold impFontW fs-5" for="timeTo">Čas do</label>
-            <input type="text" class="form-control text-light impSelect" id="timeTo" name="timeTo">
+            <input type="time" class="impTimeControl form-control text-light impSelect" id="timeTo" name="timeTo" maxlength="5">
         </div>
         <div class="form-group my-2 col-9 mx-auto">
             <label class="font-weight-bold impFontW fs-5" for="type">Typ akcie</label>
-            <input type="text" class="form-control text-light impSelect" id="type" name="type">
+            <select class="form-control text-light impSelect form-select" id="type" name="type">
+                <option value="Prednáška" selected>Prednáška</option>
+                <option value="Cvičenie">Cvičenie</option>
+            </select>
         </div>
         <div class="form-group my-2 col-9 mx-auto">
             <label class="font-weight-bold impFontW fs-5" for="name">Názov akcie</label>
@@ -90,7 +91,6 @@
             <label class="font-weight-bold impFontW fs-5" for="teacher">Vyučujúci</label>
             <input type="text" class="form-control text-light impSelect" id="teacher" name="teacher">
         </div>
-        <p class="font-weight-bold text-white fs-5">Ak je pole ID prázdne nastane vytvorenie novej rozvrhovej akcie</p>
         <button id="submitAddButton" type="submit" class="impButton my-3 btn btn-primary">Potvrdiť</button>
     </form>
 

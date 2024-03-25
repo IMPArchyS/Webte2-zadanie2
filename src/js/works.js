@@ -1,4 +1,7 @@
 $(function () {
+    var ustavBox = $('#ustav').val();
+    var typBox = $('#typProjektu').val();
+
     $.ajax({
         url: 'apiWorks.php/themes',
         type: 'GET',

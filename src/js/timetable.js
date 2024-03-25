@@ -10,15 +10,40 @@ $(function () {
         },
         success: function (data) {
             courses = data;
+            if (courses.length === 0) return;
             // loop over the courses using forEach
             courses[0].forEach(function (course) {
                 let td1 = document.getElementById(course.den + '-' + course.cas_od.substring(0, 5) + '-' + course.cas_od.substring(0, 2) + ':50');
                 let td2 = document.getElementById(course.den + '-' + course.cas_do.substring(0, 2) + ':00' + '-' + course.cas_do.substring(0, 5));
                 td1.colSpan = 2;
-                td1.innerHTML = 'id: ' + course.id + '<br>' + course.miestnost + '<br>' + course.nazov_akcie + '<br>' + course.vyucujuci;
+                td1.innerHTML = '<div>' + course.miestnost + '<br>' + course.nazov_akcie + '<br>' + course.vyucujuci + '</div>';
+                td1.innerHTML +=
+                    '<button id="' +
+                    course.id +
+                    'editID" class="impEditButton btn btn-primary mx-1 px-2 py-1">EDIT</button> <button id="' +
+                    course.id + // Added quotes around course.id
+                    'DelID" class="impDeleteButton btn btn-primary mx-1 px-2 py-1">X</button>';
                 if (course.typ_akcie === 'Prednáška') td1.className = 'impCourse';
                 else td1.className = 'impLecture';
                 td2.parentNode.removeChild(td2);
+
+                $('#' + course.id + 'DelID').on('click', function (event) {
+                    event.preventDefault();
+                    deleteCourse(course.id); // Added courseId parameter
+                });
+                $('#' + course.id + 'editID').on('click', function (event) {
+                    event.preventDefault();
+                    addForm.removeClass('d-none');
+                    addButton.addClass('d-none');
+                    $('#courseId').val(course.id);
+                    $('#day').val(course.den);
+                    $('#timeFrom').val(course.cas_od);
+                    $('#timeTo').val(course.cas_do);
+                    $('#type').val(course.typ_akcie);
+                    $('#name').val(course.nazov_akcie);
+                    $('#room').val(course.miestnost);
+                    $('#teacher').val(course.vyucujuci);
+                });
             });
         },
         error: function (error) {
@@ -26,45 +51,26 @@ $(function () {
         },
     });
 
-    let deleteForm = $('#deleteForm');
-    let deleteButton = $('#deleteButton');
     let addForm = $('#addForm');
     let addButton = $('#addButton');
-
-    deleteButton.click(function () {
-        if (deleteForm.hasClass('d-none')) {
-            deleteButton.addClass('d-none');
-            deleteForm.removeClass('d-none');
-        }
-        if (!addForm.hasClass('d-none')) {
-            addForm.addClass('d-none');
-            addButton.removeClass('d-none');
-        }
-    });
 
     addButton.click(function () {
         if (addForm.hasClass('d-none')) {
             addForm.removeClass('d-none');
             addButton.addClass('d-none');
         }
-        if (!deleteForm.hasClass('d-none')) {
-            deleteForm.addClass('d-none');
-            deleteButton.removeClass('d-none');
-        }
     });
 
-    deleteForm.submit(function (event) {
-        event.preventDefault(); // Prevent default form submission
-        let itemId = $('#deleteId').val();
+    function deleteCourse(courseId) {
         $.ajax({
-            url: 'apiCourses.php/courses?id=' + itemId, // Replace 'your_api_endpoint' with your actual endpoint
+            url: 'apiCourses.php/courses?id=' + courseId,
             method: 'DELETE',
             success: function (data) {
                 location.reload();
             },
             error: function (error) {},
         });
-    });
+    }
 
     addForm.submit(function (event) {
         const postData = {

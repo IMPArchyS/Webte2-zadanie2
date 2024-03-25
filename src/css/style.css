@@ -103,6 +103,19 @@ tbody a {
     max-width: 5%;
     border-radius: 20px !important;
 }
+
+.impDeleteButton {
+    background-color: rgb(255, 59, 59) !important;
+    border-color: rgb(255, 59, 59) !important;
+    font-weight: bold !important;
+}
+
+.impEditButton {
+    background-color: lightseagreen !important;
+    border-color: lightseagreen !important;
+    font-weight: bold !important;
+}
+
 .impRedButton {
     background-color: crimson !important;
     border-color: crimson !important;
