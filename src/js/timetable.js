@@ -24,7 +24,7 @@ $(function () {
                     'DelID" class="impDeleteButton btn btn-primary mx-1 px-2 py-1">X</button>';
                 if (course.typ_akcie === 'Prednáška') td1.className = 'impCourse';
                 else td1.className = 'impLecture';
-                if (td1 !== td2) {
+                if (td2 !== null) {
                     td1.colSpan = 2;
                     td2.parentNode.removeChild(td2);
                 }
@@ -60,6 +60,14 @@ $(function () {
         if (addForm.hasClass('d-none')) {
             addForm.removeClass('d-none');
             addButton.addClass('d-none');
+            $('#courseId').val('');
+            $('#day').val('Po');
+            $('#timeFrom').val('');
+            $('#timeTo').val('');
+            $('#type').val('Prednáška');
+            $('#name').val('');
+            $('#room').val('');
+            $('#teacher').val('');
         }
     });
 
@@ -75,10 +83,18 @@ $(function () {
     }
 
     addForm.submit(function (event) {
+        let timeS = $('#timeFrom').val(); // e.g., "13:23"
+        let hoursS = timeS.split(':')[0]; // split the string into hours and minutes, and take the hours
+        let newTimeS = hoursS + ':00'; // append ":00" to the hours
+
+        let timeE = $('#timeTo').val(); // e.g., "13:23"
+        let hoursE = timeE.split(':')[0]; // split the string i nto hours and minutes, and take the hours
+        let newTimeE = hoursE + ':50'; // append ":00" to the hours
+
         const postData = {
             den: $('#day').val(),
-            cas_od: $('#timeFrom').val(),
-            cas_do: $('#timeTo').val(),
+            cas_od: newTimeS,
+            cas_do: newTimeE,
             typ_akcie: $('#type').val(),
             nazov_akcie: $('#name').val(),
             miestnost: $('#room').val(),
