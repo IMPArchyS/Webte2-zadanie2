@@ -1,18 +1,8 @@
 <?php
-// Function to fetch data using cURL
-function fetchData($url) {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    return $data;
-}
+require_once "themes.php";
 // Define HTTP method
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Set character encoding to UTF-8
-
-// Extract endpoint from request URI
 $requestUri = explode('/', $_SERVER['REQUEST_URI']);
 $endpoint = end($requestUri);
 $parsed_url = parse_url($endpoint);
@@ -22,14 +12,15 @@ if ($endpoint === 'themes') {
     // Handle requests based on HTTP method
     switch ($method) {
         case 'GET':
-            $data = json_decode(file_get_contents("php://input"), true);
-            echo json_encode($data);
-            break;
-        case 'POST':
-            break;
-        case 'PUT':
-            break;
-        case 'DELETE':
+            $ustav = $_GET['ustav'];
+            if (isset($ustav)) {
+                $res = fetchTable($ustav); // Fetch data using fetchAll function
+                $res2 = parseDataFromTable($res); // Parse the fetched data
+                echo json_encode($res2);
+            } else {
+                http_response_code(400); // Bad Request
+                echo json_encode(array("message" => "Invalid request."));
+            }
             break;
         default:
             http_response_code(405); // Method Not Allowed

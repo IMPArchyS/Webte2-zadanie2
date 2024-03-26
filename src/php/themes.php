@@ -1,0 +1,100 @@
+<?php
+function fetchTable($ustav)  {
+    $curl = curl_init();
+
+    curl_setopt($curl, CURLOPT_URL, "https://is.stuba.sk/pracoviste/prehled_temat.pl");
+    curl_setopt($curl, CURLOPT_POSTFIELDS, "?pism=all;lang=sk;pracoviste=" . $ustav);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    $dom = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $dom->loadHTML($response);
+
+    libxml_clear_errors();
+    $xpath = new DOMXPath($dom);
+
+    $table = $xpath->query('//table[.//th[text()="Por."]]')->item(0);
+    if ($table) {
+        $tableHTML = $dom->saveHTML($table);
+        return $tableHTML;
+    } else {
+        return null;
+    }
+}
+
+function fetchAbstract($urlDetail) {
+    $curl = curl_init();
+    $url = "https://is.stuba.sk" . $urlDetail;
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+    $response = curl_exec($curl);
+    curl_close($curl);
+    // Create a DOMDocument object and load the HTML content
+    $dom = new DOMDocument();
+    $dom->loadHTML('<?xml encoding="utf-8" ?>' . $response); 
+
+    $dom->loadHTML($response); // Use @ to suppress warnings
+
+    // Use DOMXPath to query the document
+    $xpath = new DOMXPath($dom);
+
+    // Search for the <td> element containing "Abstrakt:"
+    $query = '//td[b[contains(text(), "Abstrakt:")]]/following-sibling::td[1]';
+    $abstractNodeList = $xpath->query($query);
+
+    // Extract the content from the abstract node
+    $abstract = '';
+    if ($abstractNodeList->length > 0) {
+        $abstract = $abstractNodeList->item(0)->nodeValue;
+    }
+
+    return $abstract;
+}
+
+function parseDataFromTable($tableHTML) {
+    if (is_null($tableHTML)) return;
+    
+    $dom = new DOMDocument;
+    $dom->loadHTML('<?xml encoding="utf-8" ?>' . $tableHTML);
+
+    $rows = $dom->getElementsByTagName('tr');
+    $data = array();
+    
+    foreach ($rows as $row) {
+        // Skip if the parent is a thead
+        if ($row->parentNode->nodeName === 'thead') continue;
+
+        $cells = $row->getElementsByTagName('td');
+        $rowData = array();
+        
+        // Access the cells directly by their indices
+        $obsadenost = $cells->item(9)->nodeValue;
+        list($x, $y) = explode(' / ', $obsadenost);
+        $y = ($y === '--') ? INF : intval($y);
+        
+        
+        if ((intval($x) < $y)) {
+            $rowData['typ'] = $cells->item(1)->nodeValue;
+            $rowData['nazov_temy'] = $cells->item(2)->nodeValue;
+            $rowData['veduci'] = $cells->item(3)->nodeValue;
+            $rowData['program'] = $cells->item(5)->nodeValue;
+            // Get the <a> element within the td cell
+            $anchorElement = $cells->item(8)->getElementsByTagName('a')->item(0);
+            if ($anchorElement) {
+                $rowData["abs_url"] = $anchorElement->getAttribute('href');
+                $rowData['abstrakt'] = fetchAbstract($rowData["abs_url"]);
+            } else {
+                $rowData['abstrakt'] = ''; // or handle appropriately if no <a> element is found
+                $rowData["abs_url"] = "";
+            }
+            $data[] = $rowData;
+        }
+    }
+
+    return $data;
+}
+?>

@@ -34,6 +34,7 @@
             <select class="form-control text-light impSelect" id="typProjektu" name="typProjektu">
                 <option value="Bakalársky" selected>Bakalársky</option>
                 <option value="Diplomový">Diplomový</option>
+                <option value="Dizeratčný">Dizeratčný</option>
             </select>
         </div>
     </div>
@@ -47,8 +48,7 @@
                     <th scope="col">Program</th>
                 </tr>
             </thead>
-            <tbody id="timetableBody">
-
+            <tbody id="tableBodyWorks">
             </tbody>
         </table>
     </div>
