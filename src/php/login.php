@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <title>Aktualizácia rozvrhu</title>
 </head>
 <body>
@@ -116,6 +117,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tableHTML = $dom->saveHTML($table);
     
         $doc = new DOMDocument();
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
         $doc->loadHTML(mb_convert_encoding($tableHTML, 'HTML-ENTITIES', 'UTF-8'));
         
         $xpath = new DOMXPath($doc);
