@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <title>Záverečné práce</title>
 </head>
 <body>
@@ -32,9 +33,9 @@
         <div class="col">
             <label class="font-weight-bold impFontW fs-5" for="typProjektu">Typ projektu</label>
             <select class="form-control text-light impSelect" id="typProjektu" name="typProjektu">
-                <option value="Bakalársky" selected>Bakalársky</option>
-                <option value="Diplomový">Diplomový</option>
-                <option value="Dizeratčný">Dizeratčný</option>
+                <option value="BP" selected>Bakalársky</option>
+                <option value="DP">Diplomový</option>
+                <option value="DIZP">Dizeratčný</option>
             </select>
         </div>
     </div>
@@ -51,6 +52,23 @@
             <tbody id="tableBodyWorks">
             </tbody>
         </table>
+    </div>
+</div>
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="abstractModal" tabindex="-1" role="dialog" aria-labelledby="abstractModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="abstractModalLabel">Abstrakt</h5>
+                <!-- Close button positioned to the bottom right corner -->
+            </div>
+            <div class="modal-body">
+                <p id="AbsContent">This is the body of the modal where you can display some text.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="closeButton" class="btn btn-primary" data-dismiss="modal">X</button>
+            </div>
+        </div>
     </div>
 </div>
 

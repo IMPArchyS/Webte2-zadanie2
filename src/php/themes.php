@@ -55,7 +55,7 @@ function fetchAbstract($urlDetail) {
     return $abstract;
 }
 
-function parseDataFromTable($tableHTML) {
+function parseDataFromTable($tableHTML, $typ) {
     if (is_null($tableHTML)) return;
     
     $dom = new DOMDocument;
@@ -63,7 +63,26 @@ function parseDataFromTable($tableHTML) {
 
     $rows = $dom->getElementsByTagName('tr');
     $data = array();
+
+    $elements = $dom->getElementsByTagName('th');
+
+    $zameranieExist = false;
+
+    // Loop through the found elements and check for the desired content
     
+    foreach ($elements as $element) {
+        if ($element->textContent === 'Zameranie') {
+            $zameranieExist = true;
+            break; 
+        }
+    }
+    
+    $offset = 0;
+
+    if (!$zameranieExist) {
+        $offset = 1; 
+    }
+
     foreach ($rows as $row) {
         // Skip if the parent is a thead
         if ($row->parentNode->nodeName === 'thead') continue;
@@ -72,23 +91,28 @@ function parseDataFromTable($tableHTML) {
         $rowData = array();
         
         // Access the cells directly by their indices
-        $obsadenost = $cells->item(9)->nodeValue;
+        $obsadenost = $cells->item(9 - $offset)->nodeValue;
         list($x, $y) = explode(' / ', $obsadenost);
         $y = ($y === '--') ? INF : intval($y);
         
         
-        if ((intval($x) < $y)) {
+        if ($cells->item(1)) {
             $rowData['typ'] = $cells->item(1)->nodeValue;
+        } else {
+            $rowData['typ'] = ""; // Assign a default value if the item doesn't exist
+        }
+        
+        if ((intval($x) < $y) && $typ == $rowData['typ']) {
             $rowData['nazov_temy'] = $cells->item(2)->nodeValue;
             $rowData['veduci'] = $cells->item(3)->nodeValue;
             $rowData['program'] = $cells->item(5)->nodeValue;
             // Get the <a> element within the td cell
-            $anchorElement = $cells->item(8)->getElementsByTagName('a')->item(0);
+            $anchorElement = $cells->item(8 - $offset)->getElementsByTagName('a')->item(0);
             if ($anchorElement) {
                 $rowData["abs_url"] = $anchorElement->getAttribute('href');
                 $rowData['abstrakt'] = fetchAbstract($rowData["abs_url"]);
             } else {
-                $rowData['abstrakt'] = ''; // or handle appropriately if no <a> element is found
+                $rowData['abstrakt'] = ""; // or handle appropriately if no <a> element is found
                 $rowData["abs_url"] = "";
             }
             $data[] = $rowData;
