@@ -54,12 +54,14 @@ $(function () {
             let cell = $('<td>').text(tableData[i].nazov_temy);
             cell = $('<td>');
             let text = $('<span>').text(tableData[i].nazov_temy);
+            let hiddenAbs = $('<p class="d-none">').text(tableData[i].abstrakt);
             text.click(function () {
                 absContent.text(tableData[i].abstrakt);
                 abstractModal.modal('show');
             });
             text.css('cursor', 'pointer'); // Add this line to change the cursor on hover
             cell.append(text);
+            cell.append(hiddenAbs);
             row.append(cell);
 
             cell = $('<td>').text(tableData[i].veduci);
@@ -71,6 +73,26 @@ $(function () {
             // Append the row to the table body
             tableBody.append(row);
         }
+        applyDataTables($('#tableWorks'));
+    }
+
+    function applyDataTables(table) {
+        table.DataTable({
+            order: [],
+            paging: false,
+            lengthChange: false,
+        });
+        $('#menoAbsFilter').on('keyup', function () {
+            table.DataTable().column(0).search(this.value).draw();
+        });
+
+        $('#veduciFilter').on('keyup', function () {
+            table.DataTable().column(1).search(this.value).draw();
+        });
+
+        $('#programFilter').on('keyup', function () {
+            table.DataTable().column(2).search(this.value).draw();
+        });
     }
     getByUstavType();
 });

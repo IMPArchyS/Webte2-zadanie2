@@ -7,7 +7,9 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-
+.dt-search {
+    display: none !important;
+}
 /* Mobile view */
 .responsive-table {
     font-size: 0.8em; /* Adjust this value as needed */
