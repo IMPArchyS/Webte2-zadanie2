@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="../node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>  
     <script src="../node_modules/datatables.net/js/dataTables.min.js"></script>
+    <script src="../node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
 
     <title>Záverečné práce</title>
 </head>
@@ -63,7 +66,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table class="table table-dark table-striped responsive-table" id="tableWorks">
+        <table class="table table-dark table-striped" id="tableWorks">
             <thead>
                 <tr>
                     <th scope="col">Názov témy</th>

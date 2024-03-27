@@ -7,6 +7,11 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
+
+#tableWorks_info {
+    display: none !important;
+}
+
 .dt-search {
     display: none !important;
 }

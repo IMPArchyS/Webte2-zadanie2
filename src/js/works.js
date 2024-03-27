@@ -77,10 +77,12 @@ $(function () {
     }
 
     function applyDataTables(table) {
+        table.DataTable().destroy();
         table.DataTable({
             order: [],
             paging: false,
             lengthChange: false,
+            responsive: true,
         });
         $('#menoAbsFilter').on('keyup', function () {
             table.DataTable().column(0).search(this.value).draw();
@@ -93,6 +95,8 @@ $(function () {
         $('#programFilter').on('keyup', function () {
             table.DataTable().column(2).search(this.value).draw();
         });
+
+        table.removeAttr('style');
     }
     getByUstavType();
 });
