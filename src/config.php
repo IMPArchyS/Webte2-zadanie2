@@ -1,19 +1,19 @@
 <?php
 
 $hostname = "mysql";
-$username = "root";
-$password = "root";
+$username = "imp";
+$password = "123";
 $dbname = "webte2zadanie2";
 
 define("HOSTNAME", "mysql");
-define("USERNAME", "root");
-define("PASSWORD", "root");
+define("USERNAME", "imp");
+define("PASSWORD", "imP.weB2");
 define("DBNAME", "webte2zadanie2");
 
 $dbconfig = array(
     'hostname' => 'mysql',
-    'username' => 'root',
-    'password' => 'root',
+    'username' => 'imp',
+    'password' => 'imP.weB2',
     'dbname' => 'webte2zadanie2',
 );
 

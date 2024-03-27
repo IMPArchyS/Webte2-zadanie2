@@ -30,6 +30,8 @@ services:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_ROOT_HOST: '%'
             MYSQL_DATABASE: webte2zadanie2
+            MYSQL_USER: 'imp'
+            MYSQL_PASSWORD: 'imP.weB2'
         volumes:
             - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
             - mysqldata:/var/lib/mysql
@@ -48,6 +50,14 @@ services:
         depends_on:
             mysql:
                 condition: service_healthy
+    swagger-ui:
+        image: swaggerapi/swagger-ui
+        environment:
+            SWAGGER_JSON: /documentation/swagger.json
+        volumes:
+            - ./src/documentation:/documentation
+        ports:
+            - '8082:8080'
 # Volumes
 volumes:
     mysqldata:

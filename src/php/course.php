@@ -50,7 +50,7 @@ class Course {
     }
 
     public function updateCourse($id, $data) {
-        if (!$this->checkAvailable($data)) return false;
+        if (!$this->checkAvailableUpdate($id, $data)) return false;
 
         $q = "UPDATE rozvrh SET den = :den, cas_od = :cas_od, cas_do = :cas_do, typ_akcie = :typ_akcie, nazov_akcie = :nazov_akcie, miestnost = :miestnost, vyucujuci = :vyucujuci WHERE id = :id";
         $stmt = $this->conn->prepare($q);
@@ -90,5 +90,16 @@ class Course {
         $occupied = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return empty($occupied);
     }
-}
+        private function checkAvailableUpdate($id, $data) {
+            $q = "SELECT * FROM rozvrh WHERE id = :id AND den = :den AND ((cas_od <= :cas_od AND cas_do >= :cas_od) OR (cas_od <= :cas_do AND cas_do >= :cas_do))";
+            $stmt = $this->conn->prepare($q);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':den', $data['den']);
+            $stmt->bindParam(':cas_od', $data['cas_od']);
+            $stmt->bindParam(':cas_do', $data['cas_do']);
+            $stmt->execute();
+            $occupied = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return !empty($occupied);
+        }
+    }
 ?>
