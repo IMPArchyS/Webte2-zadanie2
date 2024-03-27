@@ -97,6 +97,7 @@ $(function () {
         });
 
         table.removeAttr('style');
+        $('#tableWorks_wrapper').css('overflow', 'hidden');
     }
     getByUstavType();
 });
