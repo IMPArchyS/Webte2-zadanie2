@@ -47,7 +47,9 @@
             </tbody>
         </table>
     </div>
+    <h5 id="RESTresponse" class="text-danger my-3 impBold"></h5>
     <button id="addButton" class="impGreenButton my-3 btn btn-primary">Pridať akciu</button>
+
     <form id="addForm" class="d-none">
     <div class="form-group my-2 col-9 mx-auto d-none">
             <label class="font-weight-bold impFontW fs-5" for="courseId">ID</label>
@@ -69,8 +71,11 @@
         </div>
         <div class="form-group
         my-2 col-9 mx-auto">
-            <label class="font-weight-bold impFontW fs-5" for="timeTo">Čas do</label>
-            <input type="time" class="impTimeControl form-control text-light impSelect" id="timeTo" name="timeTo" maxlength="5">
+            <label class="font-weight-bold impFontW fs-5" for="timeTo">Dĺžka výučby</label>
+            <select class="form-control text-light impSelect form-select" id="timeTo" name="timeTo">
+                <option value="2h" selected>2 Hodiny</option>
+                <option value="1h">1 Hodina</option>
+            </select>
         </div>
         <div class="form-group my-2 col-9 mx-auto">
             <label class="font-weight-bold impFontW fs-5" for="type">Typ akcie</label>

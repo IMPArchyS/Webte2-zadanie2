@@ -55,7 +55,12 @@ if ($endpoint === 'courses') {
                 // Read incoming data
                 $data = json_decode(file_get_contents("php://input"), true);
                 $courseId = $_GET['id'];
-
+                
+                if (!$course->getCourseById($courseId)) {
+                    http_response_code(404);
+                    echo json_encode(array("message" => "Course not found."));
+                    break;
+                }
                 // Update course
                 if ($course->updateCourse($courseId, $data)) {
                     echo json_encode(array("message" => "Course updated successfully."));
