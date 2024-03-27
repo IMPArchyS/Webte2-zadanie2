@@ -8,6 +8,8 @@ $(function () {
     let abstractModal = $('#abstractModal');
     let absContent = $('#AbsContent');
     const table = $('#tableWorks');
+    tableBody.append($('<tr>').append($('<td colspan="3">').text('Údaje sa načítavajú')));
+
     function getByUstavType() {
         if (prevReq !== null) {
             prevReq.abort();
@@ -16,6 +18,7 @@ $(function () {
         console.log(ustavBox.val());
         console.log(typBox.val());
         console.log('=== FETCHING ===');
+        tableBody.append($('<tr>').append($('<td colspan="3">').text('Údaje sa načítavajú')));
         thesisData = [];
         prevReq = $.ajax({
             url: 'apiWorks.php/themes?ustav=' + ustavBox.val() + '&typ=' + typBox.val(),
@@ -27,6 +30,7 @@ $(function () {
             success: function (data) {
                 console.log(data);
                 thesisData = data;
+                tableBody.empty();
                 fillTable(thesisData);
                 window.thesisData = thesisData;
             },
@@ -51,6 +55,7 @@ $(function () {
     function fillTable(tableData) {
         table.DataTable().destroy();
         tableBody.empty(); // Clear the table body before filling with new data
+
         for (let i = 0; i < tableData.length; i++) {
             let row = $('<tr>');
 
