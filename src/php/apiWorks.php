@@ -8,7 +8,7 @@ $endpoint = end($requestUri);
 $parsed_url = parse_url($endpoint);
 $endpoint = $parsed_url['path'];
 
-$validTypes = array("BP", "DP", "DIZP");
+$validTypes = array("BP", "DP", "DizP");
 $validUstav = array("642", "548", "549", "550", "816", "817", "818", "356");
 
 if ($endpoint === 'themes') {

@@ -43,7 +43,7 @@ function fetchAbstract($urlDetail) {
     $xpath = new DOMXPath($dom);
 
     // Search for the <td> element containing "Abstrakt:"
-    $query = '//td[b[contains(text(), "Abstrakt:")]]/following-sibling::td[1]';
+    $query = '//td[b[contains(text(), "Abstrakt:") or contains(text(), "Anotácia:")]]/following-sibling::td[1]';
     $abstractNodeList = $xpath->query($query);
 
     // Extract the content from the abstract node

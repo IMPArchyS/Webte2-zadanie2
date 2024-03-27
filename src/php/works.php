@@ -39,7 +39,7 @@
                 <select class="form-control text-light impSelect" id="typProjektu" name="typProjektu">
                     <option value="BP" selected>Bakalársky</option>
                     <option value="DP">Diplomový</option>
-                    <option value="DIZP">Dizertačný</option>
+                    <option value="DizP">Dizertačný</option>
                 </select>
             </div>
         </div>

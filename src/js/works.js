@@ -7,7 +7,7 @@ $(function () {
     let prevReq = null;
     let abstractModal = $('#abstractModal');
     let absContent = $('#AbsContent');
-
+    const table = $('#tableWorks');
     function getByUstavType() {
         if (prevReq !== null) {
             prevReq.abort();
@@ -16,6 +16,7 @@ $(function () {
         console.log(ustavBox.val());
         console.log(typBox.val());
         console.log('=== FETCHING ===');
+        thesisData = [];
         prevReq = $.ajax({
             url: 'apiWorks.php/themes?ustav=' + ustavBox.val() + '&typ=' + typBox.val(),
             type: 'GET',
@@ -48,6 +49,8 @@ $(function () {
     });
 
     function fillTable(tableData) {
+        table.DataTable().destroy();
+        tableBody.empty(); // Clear the table body before filling with new data
         for (let i = 0; i < tableData.length; i++) {
             let row = $('<tr>');
 
@@ -73,11 +76,10 @@ $(function () {
             // Append the row to the table body
             tableBody.append(row);
         }
-        applyDataTables($('#tableWorks'));
+        applyDataTables();
     }
 
-    function applyDataTables(table) {
-        table.DataTable().destroy();
+    function applyDataTables() {
         table.DataTable({
             order: [],
             paging: false,
