@@ -105,7 +105,12 @@ function parseDataFromTable($tableHTML, $typ) {
         if ((intval($x) < $y) && $typ == $rowData['typ']) {
             $rowData['nazov_temy'] = $cells->item(2)->nodeValue;
             $rowData['veduci'] = $cells->item(3)->nodeValue;
+            $rowData['garantujuce_miesto'] = $cells->item(4)->nodeValue;
             $rowData['program'] = $cells->item(5)->nodeValue;
+            
+            if ($zameranieExist) {
+                $rowData["zameranie"] = $cells->item(6)->nodeValue;
+            } else $rowData["zameranie"] = "";
             // Get the <a> element within the td cell
             $anchorElement = $cells->item(8 - $offset)->getElementsByTagName('a')->item(0);
             if ($anchorElement) {
@@ -115,6 +120,8 @@ function parseDataFromTable($tableHTML, $typ) {
                 $rowData['abstrakt'] = ""; // or handle appropriately if no <a> element is found
                 $rowData["abs_url"] = "";
             }
+            unset($rowData["abs_url"]);
+            // Add $rowData to $data[]
             $data[] = $rowData;
         }
     }

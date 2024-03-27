@@ -35,7 +35,7 @@
             <select class="form-control text-light impSelect" id="typProjektu" name="typProjektu">
                 <option value="BP" selected>Bakalársky</option>
                 <option value="DP">Diplomový</option>
-                <option value="DIZP">Dizeratčný</option>
+                <option value="DIZP">Dizertačný</option>
             </select>
         </div>
     </div>
@@ -66,7 +66,7 @@
                 <p id="AbsContent">This is the body of the modal where you can display some text.</p>
             </div>
             <div class="modal-footer">
-                <button id="closeButton" class="btn btn-primary" data-dismiss="modal">X</button>
+                <button id="closeButton" class="btn btn-primary impDeleteButton" data-dismiss="modal">X</button>
             </div>
         </div>
     </div>
